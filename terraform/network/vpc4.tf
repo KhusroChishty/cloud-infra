@@ -97,7 +97,7 @@ resource "aws_eip" "nat_id" {
 
 resource "aws_nat_gateway" "nat" {
   allocation_id = aws_eip.nat_id.id
-  subnet_id   = aws_subnet.public_1.id
+  subnet_id     = aws_subnet.public_1.id
 
   tags = {
     Name = "Prod"
@@ -143,7 +143,7 @@ resource "aws_route_table" "private_rt" {
   vpc_id = aws_vpc.prod.id
 
   route {
-    cidr_block = "0.0.0.0/0"
+    cidr_block     = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.nat.id
   }
 
