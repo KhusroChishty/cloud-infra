@@ -1,5 +1,5 @@
 provider "aws" {
-  region = us-west-2
+  region = "us-west-2"
 }
 
 resource "aws_vpc" "prod" {
@@ -70,7 +70,7 @@ resource "aws_subnet" "private_1" {
 
 resource "aws_subnet" "private_2" {
   vpc_id            = aws_vpc.prod.id
-  cidr_block        = "10.0.2.0/24"
+  cidr_block        = "10.0.12.0/24"
   availability_zone = "us-west-2b"
 
   tags = {
@@ -97,7 +97,7 @@ resource "aws_eip" "nat_id" {
 
 resource "aws_nat_gateway" "nat" {
   allocation_id = aws_eip.nat_id.id
-  subnet_id     = aws_subnet.public_1.id
+  subnet_id   = aws_subnet.public_1.id
 
   tags = {
     Name = "Prod"
@@ -133,6 +133,10 @@ resource "aws_route_table_association" "public_assoc_1" {
   route_table_id = aws_route_table.public_rt.id
 }
 
+resource "aws_route_table_association" "public_assoc_2" {
+  subnet_id      = aws_subnet.public_2.id
+  route_table_id = aws_route_table.public_rt.id
+}
 
 
 resource "aws_route_table" "private_rt" {
@@ -140,7 +144,7 @@ resource "aws_route_table" "private_rt" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_nat_gateway.nat.id
+    nat_gateway_id = aws_nat_gateway.nat.id
   }
 
   tags = {
@@ -148,7 +152,13 @@ resource "aws_route_table" "private_rt" {
   }
 }
 
-resource "aws_route_table_association" "private_assoc" {
+resource "aws_route_table_association" "private_assoc_1" {
   subnet_id      = aws_subnet.private_1.id
   route_table_id = aws_route_table.private_rt.id
 }
+
+resource "aws_route_table_association" "private_assoc_2" {
+  subnet_id      = aws_subnet.private_2.id
+  route_table_id = aws_route_table.private_rt.id
+}
+
