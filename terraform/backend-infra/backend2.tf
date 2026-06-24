@@ -4,6 +4,6 @@ terraform {
     key          = "prod/terraform.tfstate"
     region       = "us-west-1"
     use_lockfile = true
-    ecrypt       = true
-  }
+    encrypt = true
+   }
 }
