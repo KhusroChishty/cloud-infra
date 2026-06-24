@@ -1,19 +1,19 @@
 resource "aws_s3_bucket" "prod_bucket" {
-    bucket = "prod-s3-infra-bucket"
+  bucket = "prod-s3-infra-bucket"
 
-    tags = {
-        Name = 
-        Environment = 
-        ManagedBy = "terraform"
-    }
+  tags = {
+    Name        = "prod"
+    Environment = "prod-env"
+    ManagedBy   = "terraform"
+  }
 }
 
 resource "aws_s3_bucket_versioning" "prod_bucket_versioing" {
-    bucket = aws_s3_bucket.prod_bucket.id
+  bucket = aws_s3_bucket.prod_bucket.id
 
-    versioning_configuration {
-        status = "Enabled"
-    }
+  versioning_configuration {
+    status = "Enabled"
+  }
 }
 
 resource "aws_s3_bucket_public_access_block" "prod_bucket_public_access" {
